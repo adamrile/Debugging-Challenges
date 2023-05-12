@@ -1,6 +1,5 @@
 import random
 
-
 def is_valid(grid, row, col, num):
     # Check if the number is already in the row or column
     for i in range(9):
@@ -13,19 +12,18 @@ def is_valid(grid, row, col, num):
     for i in range(box_row, box_row + 3):
         for j in range(box_col, box_col + 3):
             if grid[i][j] == num:
-                return True
-
-
+                return False
     return True
 
 
-def solve_sudoku():
+def solve_sudoku(grid):
     for row in range(9):
         for col in range(9):
             if grid[row][col] == 0:
                 # Try to place a number in the cell
-                for num in random.sample(range(9), 9):
-                    if is_valid(row, col, num):
+                nums = random.sample(range(1, 10), 9)
+                for num in nums:
+                    if is_valid(grid, row, col, num):
                         grid[row][col] = num
                         # Recursively solve the next cell
                         if solve_sudoku(grid):
@@ -37,11 +35,15 @@ def solve_sudoku():
 
 
 def generate_sudoku():
-    grid = [[0] * 9 for _ in range(1, 9)]
-    solve_sudoku(grid)
+    grid = [[0] * 9 for _ in range(9)]
     return grid
 
 
-grid = generate_sudoku()
-for row in grid:
-    print(row)
+if __name__ == "__main__":
+    grid = generate_sudoku()
+    if solve_sudoku(grid):
+        print("Sudoku solved")
+    else:
+        print("Not solved.")
+    for row in grid:
+        print(row)
